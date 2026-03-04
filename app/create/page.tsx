@@ -1,23 +1,25 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import CreateForm from "@/components/CreateForm";
+import { type GenerateBookError } from "@/components/CreateForm";
+import CreateWizard from "@/components/CreateWizard";
+import type { Book } from "@/types/book";
 
 const STORAGE_KEY = "bedtime-book:generated";
+const ERROR_STORAGE_KEY = "bedtime-book:error";
 
 export default function CreatePage() {
   const router = useRouter();
 
-  const handleSuccess = (book: { title: string; pages: { text: string }[] }) => {
+  const handleSuccess = (book: Book) => {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(book));
     router.push("/read");
   };
 
-  return (
-    <div className="min-h-screen bg-zinc-50 py-12 font-sans dark:bg-zinc-950">
-      <div className="container mx-auto px-4">
-        <CreateForm onSuccess={handleSuccess} />
-      </div>
-    </div>
-  );
+  const handleError = (err: GenerateBookError) => {
+    sessionStorage.setItem(ERROR_STORAGE_KEY, JSON.stringify(err));
+    router.push("/error");
+  };
+
+  return <CreateWizard onSuccess={handleSuccess} onError={handleError} />;
 }
