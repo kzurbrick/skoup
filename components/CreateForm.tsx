@@ -58,6 +58,8 @@ export const INTEREST_TOPICS = [
   "Fairies",
 ] as const;
 
+import type { GeneratedBook } from "@/types/book";
+
 export type { GeneratedBook } from "@/types/book";
 
 export type CharacterProfile = {

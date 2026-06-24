@@ -106,7 +106,7 @@ function splitSceneIntoPages(
       let wordChunk: string[] = [];
       for (const word of words) {
         const candidateWord = wordChunk.length ? [...wordChunk, word].join(" ") : word;
-        if (measure(candidateWord) <= CONTENT_HEIGHT_PX) {
+        if (measure(candidateWord) <= TEXT_HEIGHT_PX) {
           wordChunk.push(word);
         } else {
           if (wordChunk.length > 0) {
@@ -375,12 +375,20 @@ export default function BookReader({ book: bookProp }: BookReaderProps) {
           maxWidth={400}
           minHeight={380}
           maxHeight={500}
+          startPage={0}
+          startZIndex={0}
+          autoSize
           drawShadow
           flippingTime={600}
           usePortrait={usePortrait}
           showCover
           mobileScrollSupport
           maxShadowOpacity={1}
+          clickEventForward
+          useMouseEvents
+          swipeDistance={30}
+          showPageCorners
+          disableFlipByClick={false}
         >
           <Cover key="cover" title={book.title} coverImageBase64={book.coverImageBase64} />
           {renderPages.map((page, index) => {

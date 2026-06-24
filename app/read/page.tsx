@@ -88,6 +88,9 @@ export default function ReadPage() {
           body: JSON.stringify({
             coverImagePrompt: currentBook.coverImagePrompt,
             sceneImagePrompts: currentBook.pages.map((p) => p.imagePrompt ?? ""),
+            ...(currentBook.characterVisualCapsule && {
+              characterVisualCapsule: currentBook.characterVisualCapsule,
+            }),
           }),
         });
         console.log("AUTO: /api/generate-images status", res.status);
@@ -152,6 +155,9 @@ export default function ReadPage() {
           body: JSON.stringify({
             coverImagePrompt: book.coverImagePrompt,
             sceneImagePrompts: book.pages.map((p) => p.imagePrompt as string),
+            ...(book.characterVisualCapsule && {
+              characterVisualCapsule: book.characterVisualCapsule,
+            }),
           }),
         });
         if (!res.ok) {
@@ -207,6 +213,9 @@ export default function ReadPage() {
       const body = {
         coverImagePrompt: book.coverImagePrompt ?? "",
         sceneImagePrompts: book.pages.map((p) => p.imagePrompt ?? ""),
+        ...(book.characterVisualCapsule && {
+          characterVisualCapsule: book.characterVisualCapsule,
+        }),
       };
       const res = await fetch("/api/generate-images", {
         method: "POST",

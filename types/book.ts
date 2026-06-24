@@ -18,6 +18,11 @@ export type BookPage = {
  */
 export type Book = {
   title: string;
+  /**
+   * Frozen visual description of the main child, derived from the character profile.
+   * Prepended to each image API call for consistent illustrations across scenes.
+   */
+  characterVisualCapsule?: string;
   /** Optional prompt used to generate the cover image. */
   coverImagePrompt?: string;
   /** Optional base64 image data for the cover (no data URL prefix). */

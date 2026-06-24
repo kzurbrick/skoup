@@ -1,9 +1,5 @@
-import BookReader from "@/components/BookReader";
+import FeedPage from "@/components/remembr/FeedPage";
 
 export default function Home() {
-  return (
-    <div className="min-h-screen bg-zinc-50 font-sans dark:bg-zinc-950">
-      <BookReader />
-    </div>
-  );
+  return <FeedPage />;
 }

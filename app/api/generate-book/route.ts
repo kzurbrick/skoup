@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import type { BookPage, GeneratedBook } from "@/types/book";
+import { buildCharacterVisualCapsule } from "@/lib/characterVisualCapsule";
 
 const PAGE_COUNT = { Short: 6, Medium: 10 } as const;
 
@@ -187,23 +188,40 @@ function generatePages(
   return pages;
 }
 
+function withCharacterVisualCapsule(
+  book: GeneratedBook,
+  characterProfile: CharacterProfile,
+  childName: string,
+  age: number | undefined
+): GeneratedBook {
+  return {
+    ...book,
+    characterVisualCapsule: buildCharacterVisualCapsule(characterProfile, {
+      childName: childName || undefined,
+      age,
+    }),
+  };
+}
+
 /** Deterministic mock book (used when Claude is unavailable or response is invalid). */
 function getMockBook(
   childName: string,
   age: number | undefined,
   interests: string[],
   vibe: Vibe,
-  length: Length
+  length: Length,
+  characterProfile: CharacterProfile
 ): GeneratedBook {
   const pageCount = PAGE_COUNT[length];
   const title = getTitle(childName, vibe);
   const name = childName || "a child";
   const coverImagePrompt = `Bedtime story book cover: ${name} and a cozy, gentle scene reflecting the story.${IMAGE_STYLE_SUFFIX}`;
-  return {
+  const book: GeneratedBook = {
     title,
     coverImagePrompt,
     pages: generatePages(childName, age, interests, vibe, pageCount),
   };
+  return withCharacterVisualCapsule(book, characterProfile, childName, age);
 }
 
 function isValidBook(
@@ -281,9 +299,9 @@ The pages array must contain exactly the requested number of pages (6 or 10).
 
 Image prompt rules (required):
 
-Include "coverImagePrompt": one short scene description for the book cover (e.g. the child and a key moment or setting).
+Include "coverImagePrompt": composition for the book cover — setting, mood, and what is happening (e.g. the child with a helper in a cozy moment). Do NOT repeat detailed hair, skin, or outfit; say "the child" or use the child's name for identity only.
 
-Include "imagePrompt" on every page: one short scene description for that page's illustration. Describe the moment, characters, and setting clearly so an illustrator could draw it.
+Include "imagePrompt" on every page: describe ONLY this page's scene — setting, action, mood, and any helper or props. Refer to the main character as "the child" or by name; do NOT re-list gender expression, skin tone, or hair details (those are supplied separately for the image generator).
 
 Every image prompt (cover and each page) must use this exact visual style. Append this phrase to each prompt you write: "Playful children's book illustration, soft watercolor/gouache, warm lighting, rounded shapes, gentle expressions, no text in the image."
 
@@ -419,10 +437,10 @@ Refer to the child in the story in a way that feels natural and affirming. Do no
       messages: [{ role: "user", content: userPrompt }],
     });
 
-    const firstBlock = message.content?.find(
-      (b): b is { type: "text"; text: string } => (b as { type?: string }).type === "text"
-    );
-    const rawText = firstBlock?.text;
+    const rawText = message.content
+      ?.filter((b) => b.type === "text")
+      .map((b) => ("text" in b ? b.text : ""))
+      .find((t) => t.length > 0);
     if (!rawText) {
       return {
         success: false,
@@ -451,7 +469,13 @@ Refer to the child in the story in a way that feels natural and affirming. Do no
       };
     }
 
-    return { success: true, book: parsed };
+    const book = withCharacterVisualCapsule(
+      parsed as GeneratedBook,
+      characterProfile,
+      childName,
+      age
+    );
+    return { success: true, book };
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
     return {

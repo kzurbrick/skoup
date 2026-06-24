@@ -16,6 +16,8 @@ const RETRY_DELAY_MS = 1500;
 type GenerateImagesBody = {
   coverImagePrompt: string;
   sceneImagePrompts: string[];
+  /** Prepended to every cover and scene prompt for consistent character appearance. */
+  characterVisualCapsule?: string;
 };
 
 type FailureItem = {
@@ -31,10 +33,14 @@ function parseBody(raw: unknown): GenerateImagesBody | null {
   if (!Array.isArray(o.sceneImagePrompts)) return null;
   if (!o.sceneImagePrompts.every((p): p is string => typeof p === "string"))
     return null;
-  return {
+  const body: GenerateImagesBody = {
     coverImagePrompt: o.coverImagePrompt,
     sceneImagePrompts: o.sceneImagePrompts,
   };
+  if (typeof o.characterVisualCapsule === "string" && o.characterVisualCapsule.trim()) {
+    body.characterVisualCapsule = o.characterVisualCapsule.trim();
+  }
+  return body;
 }
 
 function errorResponse(
@@ -132,15 +138,22 @@ export async function POST(request: NextRequest) {
 
   const openai = new OpenAI({ apiKey });
   const failures: FailureItem[] = [];
+  const capsuleBlock = parsed.characterVisualCapsule?.trim() ?? "";
 
   const addSuffix = (p: string) => (p + PROMPT_SUFFIX).trim();
+
+  const combineWithCapsule = (sceneOrCoverPrompt: string) => {
+    const core = sceneOrCoverPrompt.trim();
+    if (!capsuleBlock) return core;
+    return `${capsuleBlock}\n\n${core}`;
+  };
 
   const generateOne = async (
     prompt: string,
     size: typeof COVER_SIZE | typeof SCENE_SIZE,
     context: { type: "cover" | "scene"; index?: number }
   ): Promise<string | null> => {
-    const fullPrompt = addSuffix(prompt);
+    const fullPrompt = addSuffix(combineWithCapsule(prompt));
     let lastErr: unknown = null;
     for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
       try {
