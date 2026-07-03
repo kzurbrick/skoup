@@ -10,7 +10,7 @@ export const SEED_ITEMS: StoredFeedItem[] = [
   {
     id: "seed-1",
     category: "change",
-    title: "Swim Practice moved to 5:30 PM Thursday",
+    title: "EXAMPLE: Swim Practice moved to 5:30 PM Thursday",
     summary:
       "Thursday's swim practice has been rescheduled from 4:30 PM to 5:30 PM. Same pool location.",
     date: daysFromToday(1),
@@ -29,7 +29,7 @@ export const SEED_ITEMS: StoredFeedItem[] = [
   {
     id: "seed-2",
     category: "deadline",
-    title: "RSVP due Friday for End of Season Party",
+    title: "EXAMPLE: RSVP due Friday for End of Season Party",
     summary:
       "Reply with the number of guests attending the end-of-season celebration.",
     date: daysFromToday(2),
@@ -47,7 +47,7 @@ export const SEED_ITEMS: StoredFeedItem[] = [
   {
     id: "seed-3",
     category: "action",
-    title: "Volunteer signup needed for concessions",
+    title: "EXAMPLE: Volunteer signup needed for concessions",
     summary:
       "The team needs parent volunteers to help run the concession stand at Saturday's game.",
     actionRequired: "Sign up for a concession shift",
@@ -64,7 +64,7 @@ export const SEED_ITEMS: StoredFeedItem[] = [
   {
     id: "seed-4",
     category: "money",
-    title: "$75 team dues due May 25",
+    title: "EXAMPLE: $75 team dues due May 25",
     summary: "Annual team registration fee of $75 is due. Pay online or bring a check to practice.",
     date: daysFromToday(5),
     amount: "$75",
@@ -81,7 +81,7 @@ export const SEED_ITEMS: StoredFeedItem[] = [
   {
     id: "seed-5",
     category: "action",
-    title: "Bring goggles and team cap to practice",
+    title: "EXAMPLE: Bring goggles and team cap to practice",
     summary:
       "Make sure your swimmer has their goggles and team cap for every practice this week.",
     date: daysFromToday(0),
