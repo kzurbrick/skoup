@@ -16,7 +16,7 @@ function escapeIcs(text: string): string {
 }
 
 export function generateIcsFile(item: FeedItem): string {
-  const uid = `${item.id}@remembr.app`;
+  const uid = `${item.id}@skoup.app`;
   const now = new Date()
     .toISOString()
     .replace(/[-:]/g, "")
@@ -25,7 +25,7 @@ export function generateIcsFile(item: FeedItem): string {
   const lines = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Remembr//Family Memory Feed//EN",
+    "PRODID:-//Skoup//Family School Feed//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",

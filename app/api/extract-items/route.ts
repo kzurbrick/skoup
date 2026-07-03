@@ -21,7 +21,7 @@ const VALID_CATEGORIES: FeedCategory[] = [
 
 const VALID_CONFIDENCE: FeedConfidence[] = ["high", "medium", "low"];
 
-const SYSTEM_PROMPT = `You are Remembr, an AI assistant that helps busy parents extract actionable information from school and activity emails.
+const SYSTEM_PROMPT = `You are Skoup, an AI assistant that helps busy parents extract actionable information from school and activity emails.
 
 Extract only useful parent-facing information into structured feed cards. Rules:
 - Do NOT create a card for every sentence. Prefer fewer, higher-value cards.

@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState } from "react";
 import { SEED_ITEMS } from "@/lib/seed";
 import type { StoredFeedItem } from "@/types/feed";
 
-const STORAGE_KEY = "remembr-feed-items";
+const STORAGE_KEY = "skoup-feed-items";
 
 function loadItems(): StoredFeedItem[] {
   if (typeof window === "undefined") return SEED_ITEMS;

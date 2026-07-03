@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import AddEmailModal from "@/components/remembr/AddEmailModal";
-import FeedCard from "@/components/remembr/FeedCard";
-import ItemDetailModal from "@/components/remembr/ItemDetailModal";
-import SourceEmailView from "@/components/remembr/SourceEmailView";
+import AddEmailModal from "@/components/skoup/AddEmailModal";
+import FeedCard from "@/components/skoup/FeedCard";
+import ItemDetailModal from "@/components/skoup/ItemDetailModal";
+import SourceEmailView from "@/components/skoup/SourceEmailView";
 import { useFeedItems } from "@/hooks/useFeedItems";
 import { countAttentionItems, groupFeedItems } from "@/lib/feed";
 import type { EmailMetadata, StoredFeedItem } from "@/types/feed";
@@ -42,10 +42,10 @@ export default function FeedPage() {
       <header className="sticky top-0 z-30 border-b border-violet-100/60 bg-[#faf8ff]/90 backdrop-blur-md">
         <div className="mx-auto max-w-lg px-4 py-5">
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            Remembr
+            Skoup
           </h1>
           <p className="mt-0.5 text-sm text-slate-500">
-            Your family&apos;s second brain.
+            Your family&apos;s school scoop.
           </p>
           <p className="mt-2 text-sm font-medium text-violet-700">
             {attentionCount === 0

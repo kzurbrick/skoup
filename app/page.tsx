@@ -1,4 +1,4 @@
-import FeedPage from "@/components/remembr/FeedPage";
+import FeedPage from "@/components/skoup/FeedPage";
 
 export default function Home() {
   return <FeedPage />;

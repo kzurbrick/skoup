@@ -8,9 +8,9 @@ const geistSans = Geist({
 });
 
 export const metadata: Metadata = {
-  title: "Remembr — Your family's second brain",
+  title: "Skoup — Your family's school scoop",
   description:
-    "Turn school and activity emails into a simple family memory feed of events, deadlines, and to-dos.",
+    "Turn school and activity emails into a simple feed of events, deadlines, and to-dos.",
 };
 
 export const viewport: Viewport = {
